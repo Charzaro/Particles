@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Particle {
-	//test a is this
+	//if you see this you succeeded!!
 	
 	// size
 	float radius;
