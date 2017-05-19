@@ -39,56 +39,92 @@ public class Physics {
 	// check if a particle hits a vertical line
 	public static void checkVerticalLine(float xpos, float xvol, float yvol, float xacc, float yacc, float radius, float linex,
 			float tmax){
-		
+
 		tempC.reset(); // reset collision holder
-		
-		if(xpos == 0){ // no collision if nothing moves
+
+		if(xpos == 0 && xacc == 0){ // no collision if nothing moves
 			return;
 		}
-		
+
 		float distance; // distance from border (negative is a left move, positive is a right move)
 		if(linex < xpos){
-			distance = -1* (xpos - radius - linex);
+			distance = xpos - (linex + radius);
 		}
 		else{
-			distance = linex - (xpos + radius);
+			distance = xpos - (linex - radius);
 		}
-		
-		// fix here for gravity
-		float timetocollision = distance/xvol; // time until collision
-		
-		if(timetocollision > 0 && timetocollision <= tmax){ // if collision occurs during time interval
-			tempC.t = timetocollision;
-			tempC.nspeedx = -xvol; // reflect x
-			tempC.nspeedy = yvol; // leave y
+
+		if(xacc == 0){
+			distance = -1*distance;
+			float timetocollision = distance/xvol;
+			if(timetocollision>0 && timetocollision<=tmax){
+				tempC.t = timetocollision;
+				tempC.nspeedx = -1*(xvol); // reflect x
+				tempC.nspeedy = yvol; // leave y
+			}
+		}
+		else{
+			// fix here for gravity
+			float t1 = (-1*xvol + (float)Math.sqrt((xvol*xvol) - (2*xacc*distance))) / xacc; // time until collision
+			float t2 = (-1*xvol - (float)Math.sqrt((xvol*xvol) - (2*xacc*distance))) / xacc;
+			if(linex<xpos){
+				System.out.format("xpos: %f xvol: %f xacc: %f%n", xpos, xvol, xacc);
+				System.out.format("t1: %f t2 %f tmax: %f%n", t1, t2, tmax);
+			}
+			if(t1 > 0 && t1 <= t2 && t1 <= tmax){ // if collision occurs during time interval
+				tempC.t = t1;
+				tempC.nspeedx = -(xvol + xacc*t1); // reflect x
+				tempC.nspeedy = yvol + yacc*t1; // leave y
+			}
+			else if(t2>0 && t2<=tmax){
+				tempC.t = t2;
+				tempC.nspeedx = -(xvol + xacc*t2); // reflect x
+				tempC.nspeedy = yvol + yacc*t2; // leave y
+			}
 		}
 	}
-	
+
 	// check if a particle hits a horizontal line
 	public static void checkHorizontalLine(float ypos, float xvol, float yvol, float xacc, float yacc, float radius, float liney,
 			float tmax){
 		
 		tempC.reset(); // reset collision holder
 		
-		if(ypos == 0){ // no collision if nothing moves
+		if(yvol == 0 && yacc == 0){ // no collision if nothing moves
 			return;
 		}
 		
 		float distance; // distance from border (negative is an up move, positive is a down move)
 		if(liney < ypos){
-			distance = -1* (ypos - radius - liney);
+			distance = ypos - (liney + radius);
 		}
 		else{
-			distance = liney - (ypos + radius);
+			distance = ypos - (liney - radius);
 		}
 		
-		// fix here for gravity
-		float timetocollision = distance/yvol; // time until collision
-		
-		if(timetocollision > 0 && timetocollision <= tmax){ // if collision occurs during time interval
-			tempC.t = timetocollision;
-			tempC.nspeedx = xvol; // leave x
-			tempC.nspeedy = -yvol; // reflect y
+		if(yacc == 0){
+			distance = -1*distance;
+			float timetocollision = distance/yvol;
+			if(timetocollision>0 && timetocollision<=tmax){
+				tempC.t = timetocollision;
+				tempC.nspeedx = xvol; // leave x
+				tempC.nspeedy = -1*(yvol); // reflect y
+			}
+		}
+		else{
+			// fix here for gravity
+			float t1 = (float)((-1*yvol + Math.sqrt((yvol*yvol) - (2*yacc*distance))) / yacc); // time until collision
+			float t2 = (float)((-1*yvol - Math.sqrt((yvol*yvol) - (2*yacc*distance))) / yacc);
+			if(t1 > 0 && t1 <= t2 && t1 <= tmax){ // if collision occurs during time interval
+				tempC.t = t1;
+				tempC.nspeedx = xvol + xacc*t1; // leave x
+				tempC.nspeedy = -1*(yvol + yacc*t1); // reflect y
+			}
+			else if(t2>0 && t2<=tmax){
+				tempC.t = t2;
+				tempC.nspeedx = xvol + xacc*t2; // leave x
+				tempC.nspeedy = -1*(yvol + yacc*t2); // reflect y
+			}
 		}
 	}
 	

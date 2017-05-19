@@ -45,7 +45,7 @@ public class Particle {
 		yvol = (float)(-1*velocity * Math.sin(Math.toRadians(angleInDegrees))); //-1 because positive y goes down
 		
 		xacc = 0;
-		yacc = 0;
+		yacc = 2;
 	}
 	
 	// reset both stored collisions
