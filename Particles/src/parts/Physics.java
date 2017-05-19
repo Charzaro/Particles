@@ -7,29 +7,29 @@ public class Physics {
 	static Collision tempC = new Collision();
 	
 	// check if the particle collides with the bounding box
-	public static void checkBoxCollision(float xpos, float ypos, float xvol, float yvol, float radius, float xmin, float ymin,
+	public static void checkBoxCollision(float xpos, float ypos, float xvol, float yvol,  float xacc, float yacc,float radius, float xmin, float ymin,
 			float xmax, float ymax, float t, Collision C){
 		
 		// right
-		checkVerticalLine(xpos, xvol, yvol, radius, xmax, t);
+		checkVerticalLine(xpos, xvol, yvol, xacc, yacc, radius, xmax, t);
 		if(tempC.t < C.t){
 			C.copy(tempC);
 		}
 		
 		// left
-		checkVerticalLine(xpos, xvol, yvol, radius, xmin, t);
+		checkVerticalLine(xpos, xvol, yvol, xacc, yacc, radius, xmin, t);
 		if(tempC.t < C.t){
 			C.copy(tempC);
 		}
 		
 		// up
-		checkHorizontalLine(ypos, xvol, yvol, radius, ymin, t);
+		checkHorizontalLine(ypos, xvol, yvol, xacc, yacc, radius, ymin, t);
 		if(tempC.t < C.t){
 			C.copy(tempC);
 		}
 
 		// down
-		checkHorizontalLine(ypos, xvol, yvol, radius, ymax, t);
+		checkHorizontalLine(ypos, xvol, yvol, xacc, yacc, radius, ymax, t);
 		if(tempC.t < C.t){
 			C.copy(tempC);
 		}
@@ -37,7 +37,7 @@ public class Physics {
 	}
 	
 	// check if a particle hits a vertical line
-	public static void checkVerticalLine(float xpos, float xvol, float yvol, float radius, float linex,
+	public static void checkVerticalLine(float xpos, float xvol, float yvol, float xacc, float yacc, float radius, float linex,
 			float tmax){
 		
 		tempC.reset(); // reset collision holder
@@ -54,6 +54,7 @@ public class Physics {
 			distance = linex - (xpos + radius);
 		}
 		
+		// fix here for gravity
 		float timetocollision = distance/xvol; // time until collision
 		
 		if(timetocollision > 0 && timetocollision <= tmax){ // if collision occurs during time interval
@@ -64,7 +65,7 @@ public class Physics {
 	}
 	
 	// check if a particle hits a horizontal line
-	public static void checkHorizontalLine(float ypos, float xvol, float yvol, float radius, float liney,
+	public static void checkHorizontalLine(float ypos, float xvol, float yvol, float xacc, float yacc, float radius, float liney,
 			float tmax){
 		
 		tempC.reset(); // reset collision holder
@@ -81,6 +82,7 @@ public class Physics {
 			distance = liney - (ypos + radius);
 		}
 		
+		// fix here for gravity
 		float timetocollision = distance/yvol; // time until collision
 		
 		if(timetocollision > 0 && timetocollision <= tmax){ // if collision occurs during time interval

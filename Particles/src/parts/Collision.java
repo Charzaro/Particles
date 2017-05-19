@@ -25,9 +25,10 @@ public class Collision {
 	}
 	
 	// get the new x position 
-	public float getNewX(float xpos, float xvol){
+	public float getNewX(float xpos, float xvol, float xacc){
 		if(t > T_EPSILON){
-			return (float) xpos + xvol*(t - T_EPSILON);
+			float tround = (t - T_EPSILON);
+			return (float) (xpos + xvol*tround + (0.5*xacc*tround*tround));
 		}
 		else{
 			return xpos;
@@ -35,9 +36,10 @@ public class Collision {
 	}
 	
 	// get the new y position
-	public float getNewY(float ypos, float yvol){
+	public float getNewY(float ypos, float yvol, float yacc){
 		if(t > T_EPSILON){
-			return (float) ypos + yvol*(t - T_EPSILON);
+			float tround = (t - T_EPSILON);
+			return (float) (ypos + yvol*tround + (0.5*yacc*tround*tround));
 		}
 		else{
 			return ypos;

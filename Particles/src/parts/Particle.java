@@ -14,6 +14,9 @@ public class Particle {
 	// speed in x and y directions
 	float xvol;
 	float yvol;
+	
+	float xacc;
+	float yacc;
 	// color
 	Color color;
 	
@@ -40,7 +43,9 @@ public class Particle {
 		// obtain velocities in x and y directions from angle and velocity
 		xvol = (float)(velocity * Math.cos(Math.toRadians(angleInDegrees)));
 		yvol = (float)(-1*velocity * Math.sin(Math.toRadians(angleInDegrees))); //-1 because positive y goes down
-
+		
+		xacc = 0;
+		yacc = 0;
 	}
 	
 	// reset both stored collisions
@@ -51,7 +56,7 @@ public class Particle {
 	
 	// checks if the particle will hit the box boundaries in the time remaining
 	public void checkCollisions(BoxPanel box, float timelimit){
-		Physics.checkBoxCollision(xpos, ypos, xvol, yvol, radius, 0, 0, (float)box.width,
+		Physics.checkBoxCollision(xpos, ypos, xvol, yvol, xacc, yacc, radius, 0, 0, (float)box.width,
 				(float)box.height, timelimit, tempCollision);
 		// only keep collision if it is the earliest collision
 		if(tempCollision.t < firstCollision.t){
@@ -76,15 +81,17 @@ public class Particle {
 		
 		if(firstCollision.t <= time){ // if the particle collides in given time
 			//System.out.println("BOOM"); //debug purposes
-			xpos = firstCollision.getNewX(xpos, xvol);
-			ypos = firstCollision.getNewY(ypos, yvol);
+			xpos = firstCollision.getNewX(xpos, xvol, xacc);
+			ypos = firstCollision.getNewY(ypos, yvol, yacc);
 			xvol = firstCollision.nspeedx;
 			yvol = firstCollision.nspeedy;
 			//System.out.format("newx: %f newy: %f%n", xpos, ypos); // debug line
 		}
 		else{ // move without collision
-			xpos += xvol * time;
-			ypos += yvol * time;
+			xpos += xvol * time + (0.5*xacc*time*time);
+			ypos += yvol * time + (0.5*yacc*time*time);
+			xvol += xacc*time;
+			yvol += yacc*time;
 		}
 		
 	}
