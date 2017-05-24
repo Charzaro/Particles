@@ -6,7 +6,7 @@
 package UI;
 
 import java.awt.Color;
-
+import java.awt.Dimension;
 
 import parts.BoxPanel;
 import parts.Particle;
@@ -53,6 +53,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         BoxPanel = new BoxPanel(WIDTH, HEIGHT);
+        BoxPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         jPanel1 = new javax.swing.JPanel();
         PauseButton = new javax.swing.JButton();
         RandomParticleButton = new javax.swing.JButton();
@@ -70,12 +71,15 @@ public class MainFrame extends javax.swing.JFrame {
         YLabel = new javax.swing.JLabel();
         YField = new javax.swing.JTextField();
         DeleteButton = new javax.swing.JButton();
+        GravityButton = new javax.swing.JButton();
+        GravityLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Box of Particles");
-        setPreferredSize(new java.awt.Dimension(600, 400));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setMinimumSize(new java.awt.Dimension(600, 400));
 
-        BoxPanel.setPreferredSize(new java.awt.Dimension(400, 400));
+        BoxPanel.setPreferredSize(null);
         BoxPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 BoxPanelMousePressed(evt);
@@ -93,7 +97,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         BoxPanelLayout.setVerticalGroup(
             BoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         PauseButton.setText("Play");
@@ -158,6 +162,15 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        GravityButton.setText("Off");
+        GravityButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GravityButtonActionPerformed(evt);
+            }
+        });
+
+        GravityLabel.setText("Gravity:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -190,8 +203,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(SizeLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(PlaceParticleButton))
-                .addContainerGap(33, Short.MAX_VALUE))
+                    .addComponent(PlaceParticleButton)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(GravityLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(GravityButton)))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,7 +243,11 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(DeleteButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ClearButton)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(GravityLabel)
+                    .addComponent(GravityButton))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -236,13 +257,12 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(BoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(BoxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(BoxPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         getAccessibleContext().setAccessibleDescription("Simulattes a box of bouncing particles.");
@@ -386,6 +406,10 @@ public class MainFrame extends javax.swing.JFrame {
         BoxPanel.clearAll();
     }//GEN-LAST:event_ClearButtonActionPerformed
 
+    private void GravityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GravityButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GravityButtonActionPerformed
+
     
     // My Functions
     private void addParticle(int x, int y){
@@ -451,6 +475,8 @@ public class MainFrame extends javax.swing.JFrame {
     private BoxPanel BoxPanel;
     private javax.swing.JButton ClearButton;
     private javax.swing.JButton DeleteButton;
+    private javax.swing.JButton GravityButton;
+    private javax.swing.JLabel GravityLabel;
     private javax.swing.JButton PauseButton;
     private javax.swing.JButton PlaceAtButton;
     private javax.swing.JButton PlaceParticleButton;

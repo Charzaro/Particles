@@ -67,11 +67,7 @@ public class Physics {
 			// fix here for gravity
 			float t1 = (-1*xvol + (float)Math.sqrt((xvol*xvol) - (2*xacc*distance))) / xacc; // time until collision
 			float t2 = (-1*xvol - (float)Math.sqrt((xvol*xvol) - (2*xacc*distance))) / xacc;
-			if(linex<xpos){
-				System.out.format("xpos: %f xvol: %f xacc: %f%n", xpos, xvol, xacc);
-				System.out.format("t1: %f t2 %f tmax: %f%n", t1, t2, tmax);
-			}
-			if(t1 > 0 && t1 <= t2 && t1 <= tmax){ // if collision occurs during time interval
+			if(t1 > 0 && t1 <= tmax && (t1 <= t2 || t2 < 0)){ // if collision occurs during time interval
 				tempC.t = t1;
 				tempC.nspeedx = -(xvol + xacc*t1); // reflect x
 				tempC.nspeedy = yvol + yacc*t1; // leave y
@@ -115,7 +111,11 @@ public class Physics {
 			// fix here for gravity
 			float t1 = (float)((-1*yvol + Math.sqrt((yvol*yvol) - (2*yacc*distance))) / yacc); // time until collision
 			float t2 = (float)((-1*yvol - Math.sqrt((yvol*yvol) - (2*yacc*distance))) / yacc);
-			if(t1 > 0 && t1 <= t2 && t1 <= tmax){ // if collision occurs during time interval
+			/*if(liney>ypos){
+				System.out.format("ypos: %f yvol: %f yacc: %f%n", ypos, yvol, yacc);
+				System.out.format("t1: %f t2 %f tmax: %f%n", t1, t2, tmax);
+			}*/
+			if(t1 > 0 && t1 <= tmax && (t1 <= t2 || t2 < 0)){ // if collision occurs during time interval
 				tempC.t = t1;
 				tempC.nspeedx = xvol + xacc*t1; // leave x
 				tempC.nspeedy = -1*(yvol + yacc*t1); // reflect y
@@ -152,7 +152,7 @@ public class Physics {
 		float t2 = (part1 - (float)Math.sqrt(part2))/part3;
 		
 		// take the earliest positive collision if it is within the time step
-		if(t1 > 0 && t1 <= t2 && t1 <= timeLimit){
+		if(t1 > 0 && t1 <= timeLimit && (t1 <= t2 || t2 < 0)){
 			// store time in the collisions and calculate response
 			p1Collision.t = t1;
 			p2Collision.t = t1;
